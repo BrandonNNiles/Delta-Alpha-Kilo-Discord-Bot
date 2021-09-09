@@ -1,14 +1,16 @@
 import discord
 from discord.ext import commands
+from config import *
 
 client = commands.Bot(command_prefix = ',')
 
-
-print("Attempting to start bot...")
 @client.event
 async def on_ready():
     print("Bot initialized.")
 
+def startBot(token):
+    print("Attempting to start bot...")
+    client.run(token)
 
-token = open("token.txt", "r").read()
-client.run(token)
+token = open(token_file, "r").read() #Work on encryption later
+startBot(token) #Must be last line
