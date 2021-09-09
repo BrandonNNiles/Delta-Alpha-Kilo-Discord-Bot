@@ -12,5 +12,5 @@ def startBot(token):
     print("Attempting to start bot...")
     client.run(token)
 
-token = open(token_file, "r").read() #Work on encryption later
-startBot(token) #Must be last line
+bot_token = open(token_file, "r").read() #Work on encryption later
+startBot(bot_token) #Must be last line
