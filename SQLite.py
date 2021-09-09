@@ -42,8 +42,7 @@ def logMessage(message):
     message_text = message.content
     message_id = message.id
     channel = message.channel.name
-    unix = time.time()
-    timestamp = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
+    timestamp = message.created_at #times are in UTC and must be converted
     c.execute("INSERT INTO messages VALUES (?,?,?,?,?,?)",
     (username, user_id, message_text, message_id, channel, timestamp))
     closeConn(conn)
@@ -53,6 +52,7 @@ def printDB():
     c.execute("SELECT rowid, * FROM messages")
     print(c.fetchall())
     closeConn(conn)
+
 
 print("Attempting to start database...")
 dbInit()
