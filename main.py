@@ -31,6 +31,15 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
     time_elapsed = round(finish - start)
     print("Logged {} messages. Took {} seconds".format(message_count, time_elapsed))
 
+async def getInvite(guildID):
+    pre_invites = invites[guildID]
+    post_invites = await get_guild(guildID).invites()
+    correct_invite = None
+
+    for invite in pre_invites:
+        if invite.uses < find_invite_by_code(post_invites, invite.code).uses:
+            correct_invite = invite
+    return invite
 
 #Events
 
@@ -41,9 +50,24 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    print("Attempting to log message.")
+    username = message.author.name
+    content = message.content
+    print("{}: {}".format(username, content))
     guildID = message.guild.id
     logMessage(guildID, message)
+
+@client.event
+async def on_member_join(member):
+    username = member.name
+    guildID = member.guild.id
+    invite = getInvite(guildID)
+    if invite == None:
+        print("{} has joined from an unknown source.")
+    else:
+        inviteid = invite.code
+        inviter = invite.inviter.name
+        print("{} has joined from code {} by {}".format(username, inviteid, inviter))
+        logJoin(guildID, member, invite)
 
 
 bot_token = open(token_file, "r").read() #Work on encryption later

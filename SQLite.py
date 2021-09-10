@@ -28,7 +28,7 @@ def createTables(fileID):
         timestamp text
     )""")
 
-    c.execute("""CREATE TABLE IF NOT EXISTS join(
+    c.execute("""CREATE TABLE IF NOT EXISTS connect(
         username text,
         user_id integer,
         bot bool,
@@ -83,18 +83,18 @@ def logMessage(fileID, message):
     closeConn(conn)
 
 #Attempts to log a new member event to a given file
-def logJoin(fileID, user, inviter):
+def logJoin(fileID, user, invite):
     conn, c = openConn(fileID)
     username = user.name
     user_id = user.id
     bot = user.bot
-    invite = "none" #temp
-    invited_name = inviter.name
-    invited_id = inviter.id
+    invite = invite.code
+    invited_name = invite.inviter.name
+    invited_id = invite.inviter.id
     timestamp = user.joined_at#times are in UTC and must be converted
     if timestamp == None:
         timestamp = "Unknown"
-    c.execute("INSERT INTO join VALUES (?,?,?,?,?,?, ?)",
+    c.execute("INSERT INTO connect VALUES (?,?,?,?,?,?, ?)",
     (username, user_id, bot, invite, invited_name, invited_id, timestamp))
     closeConn(conn)
 
