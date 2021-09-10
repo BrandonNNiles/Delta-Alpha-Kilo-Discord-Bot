@@ -25,7 +25,7 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
         async for message in messages:
             message_count = message_count + 1
             print("Logging message ({})".format(message_count))
-            logMessage(message)
+            logMessage(guildID, message)
     finish = time.time()
     print("Backup complete.")
     time_elapsed = round(finish - start)
@@ -42,8 +42,8 @@ async def on_ready():
 @client.event
 async def on_message(message):
     print("Attempting to log message.")
-    logMessage(message)
-    print()
+    guildID = message.guild.id
+    logMessage(guildID, message)
 
 
 bot_token = open(token_file, "r").read() #Work on encryption later

@@ -3,10 +3,11 @@ import os
 import time
 import datetime
 
-db_directory = "db"
+db_directory = "db/"
 
-def openConn():
-    conn = sqlite3.connect('db/server_main.db')
+def openConn(filename):
+    path = db_directory + str(filename) + ".db"
+    conn = sqlite3.connect(path)
     c = conn.cursor()
     return conn, c
 
@@ -14,9 +15,9 @@ def closeConn(conn):
     conn.commit()
     conn.close()
 
-def createTables():
+def createTables(fileID):
     #Create a Table
-    conn, c = openConn()
+    conn, c = openConn(fileID)
     c.execute("""CREATE TABLE IF NOT EXISTS messages(
         username text,
         user_id integer,
@@ -27,15 +28,15 @@ def createTables():
     )""")
     closeConn(conn)
 
-def dbInit():
+def dbInit(fileID):
     os.chdir(os. getcwd())
     if not os.path.isdir(db_directory):   
         os.mkdir(db_directory)
-    createTables()
+    createTables(fileID)
     print("Database initialized successfully.")
 
-def logMessage(message):
-    conn, c = openConn()
+def logMessage(fileID, message):
+    conn, c = openConn(fileID)
     username = message.author.name
     user_id = message.author.id
     message_text = message.content
@@ -45,13 +46,14 @@ def logMessage(message):
     c.execute("INSERT INTO messages VALUES (?,?,?,?,?,?)",
     (username, user_id, message_text, message_id, channel, timestamp))
     closeConn(conn)
-    
-def printDB():
-    conn, c = openConn()
+
+def printDB(fileID):
+    conn, c = openConn(fileID)
     c.execute("SELECT rowid, * FROM messages")
     print(c.fetchall())
     closeConn(conn)
 
 
 print("Attempting to start database...")
-dbInit()
+guildID = 275482449591402496
+dbInit(guildID)
