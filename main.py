@@ -9,10 +9,13 @@ DAKServerID = 275482449591402496
 
 #Methods
 
+#Connects the client to the server
 def startBot(token):
     print("Attempting to start bot...")
     client.run(token)
 
+#Attempts to log the entire history of a specified server.
+#Call using: await logAll(DAKServerID)
 async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound = None, goldest_first = True):
     message_count = 0
     start = time.time()
@@ -35,12 +38,11 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
 async def on_ready():
     start = time.time()
     print("Bot initialized.")
-    await logAll(DAKServerID)
 
 @client.event
 async def on_message(message):
-    #print("Attempting to log message.")
-    #logMessage(message)
+    print("Attempting to log message.")
+    logMessage(message)
     print()
 
 
