@@ -32,6 +32,7 @@ def createTables(fileID):
         username text,
         user_id integer,
         bot bool,
+        invite text,
         invited_name text,
         invited_id integer,
         timestamp text
@@ -87,13 +88,14 @@ def logJoin(fileID, user, inviter):
     username = user.name
     user_id = user.id
     bot = user.bot
+    invite = "none" #temp
     invited_name = inviter.name
     invited_id = inviter.id
     timestamp = user.joined_at#times are in UTC and must be converted
     if timestamp == None:
         timestamp = "Unknown"
-    c.execute("INSERT INTO join VALUES (?,?,?,?,?,?)",
-    (username, user_id, bot, invited_name, invited_id, timestamp))
+    c.execute("INSERT INTO join VALUES (?,?,?,?,?,?, ?)",
+    (username, user_id, bot, invite, invited_name, invited_id, timestamp))
     closeConn(conn)
 
 #Attempts to log a member leaving event to a given file
@@ -105,7 +107,7 @@ def logLeave(fileID, user):
     timestamp = user.joined_at#times are in UTC and must be converted
     if timestamp == None:
         timestamp = "Unknown"
-    c.execute("INSERT INTO leave VALUES (?,?,?,?,?,?)",
+    c.execute("INSERT INTO leave VALUES (?,?,?,?)",
     (username, user_id, bot, timestamp))
     closeConn(conn)
 
