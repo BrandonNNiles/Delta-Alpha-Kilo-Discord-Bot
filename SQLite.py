@@ -34,7 +34,6 @@ def dbInit():
     createTables()
     print("Database initialized successfully.")
 
-
 def logMessage(message):
     conn, c = openConn()
     username = message.author.name
@@ -46,7 +45,7 @@ def logMessage(message):
     c.execute("INSERT INTO messages VALUES (?,?,?,?,?,?)",
     (username, user_id, message_text, message_id, channel, timestamp))
     closeConn(conn)
-
+    
 def printDB():
     conn, c = openConn()
     c.execute("SELECT rowid, * FROM messages")
