@@ -67,6 +67,32 @@ def logMessage(fileID, message):
     (username, user_id, message_text, message_id, channel, timestamp))
     closeConn(conn)
 
+def logJoin(fileID, user, inviter):
+    conn, c = openConn(fileID)
+    username = user.name
+    user_id = user.id
+    bot = user.bot
+    invited_name = inviter.name
+    invited_id = inviter.id
+    timestamp = user.joined_at#times are in UTC and must be converted
+    if timestamp == None:
+        timestamp = "Unknown"
+    c.execute("INSERT INTO join VALUES (?,?,?,?,?,?)",
+    (username, user_id, bot, invited_name, invited_id, timestamp))
+    closeConn(conn)
+
+def logLeave(fileID, user):
+    conn, c = openConn(fileID)
+    username = user.name
+    user_id = user.id
+    bot = user.bot
+    timestamp = user.joined_at#times are in UTC and must be converted
+    if timestamp == None:
+        timestamp = "Unknown"
+    c.execute("INSERT INTO leave VALUES (?,?,?,?,?,?)",
+    (username, user_id, bot, timestamp))
+    closeConn(conn)
+
 def printDB(fileID):
     conn, c = openConn(fileID)
     c.execute("SELECT rowid, * FROM messages")
