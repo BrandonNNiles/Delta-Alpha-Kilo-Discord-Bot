@@ -31,9 +31,16 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
     time_elapsed = round(finish - start)
     print("Logged {} messages. Took {} seconds".format(message_count, time_elapsed))
 
+def find_invite_by_code(invite_list, code):
+    correct_invite = None
+    for invite in invite_list:
+        if invite.code == code:
+            correct_invite = invite
+    return correct_invite()
+
 async def getInvite(guildID):
     pre_invites = invites[guildID]
-    post_invites = await get_guild(guildID).invites()
+    post_invites = await client.get_guild(guildID).invites()
     correct_invite = None
 
     for invite in pre_invites:
