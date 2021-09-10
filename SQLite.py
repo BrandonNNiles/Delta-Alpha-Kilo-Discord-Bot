@@ -24,6 +24,28 @@ def createTables(fileID):
         channel text,
         timestamp text
     )""")
+
+    c.execute("""CREATE TABLE IF NOT EXISTS join(
+        username text,
+        user_id integer,
+        bot bool,
+        invited_name text,
+        invited_id integer,
+        timestamp text
+    )""")
+
+    c.execute("""CREATE TABLE IF NOT EXISTS leave(
+        username text,
+        user_id integer,
+        bot bool,
+        timestamp text
+    )""")
+
+    c.execute("""CREATE TABLE IF NOT EXISTS stats(
+        total_messages integer,
+        total_members integer
+
+    )""")
     closeConn(conn)
 
 def dbInit(fileID):
