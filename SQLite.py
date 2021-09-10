@@ -3,18 +3,21 @@ import os
 
 db_directory = "db/"
 
+#Connects to a given database file
 def openConn(filename):
     path = db_directory + str(filename) + ".db"
     conn = sqlite3.connect(path)
     c = conn.cursor()
     return conn, c
 
+#Closses a connection
 def closeConn(conn):
     conn.commit()
     conn.close()
 
+#Creates default tables for a given file
 def createTables(fileID):
-    #Create a Table
+
     conn, c = openConn(fileID)
     c.execute("""CREATE TABLE IF NOT EXISTS messages(
         username text,
@@ -46,15 +49,26 @@ def createTables(fileID):
         total_members integer
 
     )""")
+
+    c.execute("""CREATE TABLE IF NOT EXISTS members(
+        username text,
+        user_id integer,
+        voice_connections integer,
+        chat_messages integer
+
+    )""")
     closeConn(conn)
 
+#Attempts to initialize the database
 def dbInit(fileID):
+    print("Attempting to start database...")
     os.chdir(os. getcwd())
     if not os.path.isdir(db_directory):   
         os.mkdir(db_directory)
     createTables(fileID)
     print("Database initialized successfully.")
 
+#Attempts to log a a given message to a given file
 def logMessage(fileID, message):
     conn, c = openConn(fileID)
     username = message.author.name
@@ -67,6 +81,7 @@ def logMessage(fileID, message):
     (username, user_id, message_text, message_id, channel, timestamp))
     closeConn(conn)
 
+#Attempts to log a new member event to a given file
 def logJoin(fileID, user, inviter):
     conn, c = openConn(fileID)
     username = user.name
@@ -81,6 +96,7 @@ def logJoin(fileID, user, inviter):
     (username, user_id, bot, invited_name, invited_id, timestamp))
     closeConn(conn)
 
+#Attempts to log a member leaving event to a given file
 def logLeave(fileID, user):
     conn, c = openConn(fileID)
     username = user.name
@@ -93,13 +109,12 @@ def logLeave(fileID, user):
     (username, user_id, bot, timestamp))
     closeConn(conn)
 
+#Prints the database to console, unformatted
 def printDB(fileID):
     conn, c = openConn(fileID)
     c.execute("SELECT rowid, * FROM messages")
     print(c.fetchall())
     closeConn(conn)
 
-
-print("Attempting to start database...")
 guildID = 275482449591402496
 dbInit(guildID)
