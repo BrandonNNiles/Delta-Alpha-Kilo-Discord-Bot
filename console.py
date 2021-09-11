@@ -43,6 +43,8 @@ def executeCommand(message):
             found = True
             if args and command.args != [None]:
                 return command.func(args) #args are always passed as a list of args
+            elif args == None and command.args != [None]: #args required but not given
+                print("Missing arguments, required: {}".format(command.args))
             else:
                 return command.func()
     
