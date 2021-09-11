@@ -31,20 +31,22 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
     time_elapsed = round(finish - start)
     print("Logged {} messages. Took {} seconds".format(message_count, time_elapsed))
 
-def find_invite_by_code(invite_list, code):
+#Tries to find needle code in haystack
+def hasInvite(inviteList, code):
     correct_invite = None
-    for invite in invite_list:
+    for invite in inviteList:
         if invite.code == code:
             correct_invite = invite
     return correct_invite()
 
+#Determines an invite used by an individual when joining the server
 async def getInvite(guildID):
-    pre_invites = invites[guildID]
+    pre_invites = invites[guildID] #Check before and after
     post_invites = await client.get_guild(guildID).invites()
     correct_invite = None
 
     for invite in pre_invites:
-        if invite.uses < find_invite_by_code(post_invites, invite.code).uses:
+        if invite.uses < hasInvite(post_invites, invite.code).uses:
             correct_invite = invite
     return invite
 
