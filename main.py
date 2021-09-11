@@ -73,6 +73,7 @@ async def on_message(message):
     username = message.author.name
     content = message.content
     channel = message.channel.name
+    print("{}".format(message.author.guild.id))
     print("[{}] {}: {}".format(channel, username, content))
     guildID = message.guild.id
     logMessage(guildID, message)
@@ -98,7 +99,65 @@ async def on_member_leave(member):
     print("{} has left the server".format(username))
     logLeave(guildID, member)
 
+'''
+    A list of commands to be available to command line.
+'''
 
+from console import *
+
+
+Command(help_id, 
+        "Displays all commands available.",
+        cmdHelp)
+
+
+def cmdPrint(id = None):
+    if id is None:
+        print("Please specifiy a command.")
+    else:
+        print(executeCommand(command_prefix + id))
+
+Command("print",
+        "Prints the result of executing a given command.",
+        cmdPrint,
+        ["Command"]
+)
+
+def cmdSay(channelID, message):
+    print("Placeholder")
+
+Command("say",
+        "Sends a message to a given channel.",
+        cmdSay,
+        ["ChannelID", "Message"]
+)
+
+
+def cmdChannelList(guildID):
+    guild = client.get_guild(int(guildID[0]))
+    channels = guild.text_channels
+    print("Found {} channels in {}:".format(len(channels), guild.name))
+    for channel in guild.text_channels:
+        print("{}: {}".format(channel.name, channel.id))
+
+
+Command("channellist",
+        "Returns a list of all channels and their IDs",
+        cmdChannelList,
+        ["GuildID"]
+)
+
+####################
+#Your commands below
+####################
+
+'''
+Command("name",
+        "Description.",
+        function,
+        ["Argument1", "Argument2", "ArgumentX"]
+)
+'''
 
 bot_token = open(token_file, "r").read() #Work on encryption later
 startBot(bot_token) #Must be last line
