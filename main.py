@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from config import *
 from SQLite import *
+from consolecommands import *
 import time
 
 client = commands.Bot(command_prefix = ',')
