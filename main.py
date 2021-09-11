@@ -4,11 +4,19 @@ from config import *
 from SQLite import *
 from consolecommands import *
 import time
+import aioconsole
 
 client = commands.Bot(command_prefix = ',')
 DAKServerID = 275482449591402496
 
 #Methods
+
+async def commandListener():
+    while True:
+        attempt = await aioconsole.ainput("Enter a command: ")
+        executeCommand(attempt.lower())
+
+
 
 #Connects the client to the server
 def startBot(token):
@@ -58,6 +66,7 @@ async def on_ready():
     
     start = time.time()
     print("Bot initialized.")
+    await commandListener()
 
 @client.event
 async def on_message(message):
