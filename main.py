@@ -52,6 +52,7 @@ async def getInvite(guildID):
 
 @client.event
 async def on_ready():
+    
     start = time.time()
     print("Bot initialized.")
 
@@ -59,7 +60,8 @@ async def on_ready():
 async def on_message(message):
     username = message.author.name
     content = message.content
-    print("{}: {}".format(username, content))
+    channel = message.channel.name
+    print("[{}] {}: {}".format(channel, username, content))
     guildID = message.guild.id
     logMessage(guildID, message)
 
@@ -69,12 +71,21 @@ async def on_member_join(member):
     guildID = member.guild.id
     invite = getInvite(guildID)
     if invite == None:
-        print("{} has joined from an unknown source.")
+        print("{} has joined from an unknown source.".format(username))
     else:
         inviteid = invite.code
         inviter = invite.inviter.name
-        print("{} has joined from code {} by {}".format(username, inviteid, inviter))
+        print("{} has joined from invite {} by {}".format(username, inviteid, inviter))
         logJoin(guildID, member, invite)
+
+@client.event
+async def on_member_leave(member):
+    username = member.name
+    guildID = member.guild.id
+    invite = getInvite(guildID)
+    print("{} has left the server".format(username))
+    logLeave(guildID, member)
+
 
 
 bot_token = open(token_file, "r").read() #Work on encryption later
