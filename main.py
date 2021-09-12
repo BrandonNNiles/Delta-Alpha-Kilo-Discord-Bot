@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from config import *
 from SQLite import *
-from consolecommands import *
+from console import *
 import time
 import aioconsole
 
@@ -132,7 +132,6 @@ Command("say",
         ["ChannelID", "Message"]
 )
 
-
 def cmdChannelList(guildID):
     guild = client.get_guild(int(guildID[0]))
     channels = guild.text_channels
@@ -140,11 +139,20 @@ def cmdChannelList(guildID):
     for channel in guild.text_channels:
         print("{}: {}".format(channel.name, channel.id))
 
-
 Command("channellist",
-        "Returns a list of all channels and their IDs",
+        "Prints a list of all channels and their IDs.",
         cmdChannelList,
         ["GuildID"]
+)
+
+def cmdGuildList():
+    print("Found {} guilds.".format(len(client.guilds)))
+    for guild in client.guilds:
+        print("{}: {}".format(guild.name, guild.id))
+
+Command("guildlist",
+        "Prints a list of guilds and IDs that the bot is in.",
+        cmdGuildList
 )
 
 ####################
