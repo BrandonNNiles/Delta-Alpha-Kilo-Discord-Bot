@@ -26,11 +26,11 @@ class Command:
         self.args = args #a list of arguments to be provided, only used for help command
 
 #Attempts to execute the function of a given command
-def executeCommand(message):
+async def executeCommand(message):
     print()
     prefix = message[0]
     message = message[1:].split()
-    id = message[0]
+    id = message[0].lower()
 
     args = None
 
@@ -42,11 +42,11 @@ def executeCommand(message):
         if command.id.lower() == id:
             found = True
             if args and command.args != [None]:
-                return command.func(args) #args are always passed as a list of args
+                return await command.func(args) #args are always passed as a list of args
             elif args == None and command.args != [None]: #args required but not given
                 print("Missing arguments, required: {}".format(command.args))
             else:
-                return command.func()
+                return await command.func()
     
     if not found:
         print("Unknown command, type {}{} for a list of commands.".format(command_prefix, help_id))
@@ -60,7 +60,7 @@ def f_len(text, length):
     return text
 
 #Help command, displays a formated list of all commands
-def cmdHelp():
+async def cmdHelp():
     #header
     print("Found {} commands:\n".format(len(Command.command_list)))
     print("Command          Arguments                      Description")

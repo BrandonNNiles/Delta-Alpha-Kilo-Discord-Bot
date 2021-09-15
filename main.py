@@ -14,7 +14,7 @@ DAKServerID = 275482449591402496
 async def commandListener():
     while True:
         attempt = await aioconsole.ainput("Enter a command: ")
-        executeCommand(attempt.lower())
+        await executeCommand(attempt)
 
 
 
@@ -111,7 +111,7 @@ Command(help_id,
         cmdHelp)
 
 
-def cmdPrint(id = None):
+async def cmdPrint(id = None):
     if id is None:
         print("Please specifiy a command.")
     else:
@@ -123,8 +123,12 @@ Command("print",
         ["Command"]
 )
 
-def cmdSay(channelID, message):
-    print("Placeholder")
+async def cmdSay(args):
+    await client.wait_until_ready() #make sure we can send a message
+    channelID = args[0]
+    message = " "
+    message = message.join(args[1:])
+    await client.get_channel(int(channelID)).send(message)
 
 Command("say",
         "Sends a message to a given channel.",
@@ -132,7 +136,7 @@ Command("say",
         ["ChannelID", "Message"]
 )
 
-def cmdChannelList(guildID):
+async def cmdChannelList(guildID):
     guild = client.get_guild(int(guildID[0]))
     channels = guild.text_channels
     print("Found {} channels in {}:".format(len(channels), guild.name))
@@ -145,7 +149,7 @@ Command("channellist",
         ["GuildID"]
 )
 
-def cmdGuildList():
+async def cmdGuildList():
     print("Found {} guilds.".format(len(client.guilds)))
     for guild in client.guilds:
         print("{}: {}".format(guild.name, guild.id))
