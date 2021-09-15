@@ -18,12 +18,14 @@ help_id = "help" #The command id for the help command, default: "help"
 #Command class definition
 class Command:
     command_list = []
-    def __init__(self, id, description, func, args = [None]):
+    def __init__(self, id, description, func, args = []):
         self.__class__.command_list.append(self)
         self.id = id #string: a unique name
         self.description = description #string: a description, only used for help command
         self.func = func #function: code to be executed
         self.args = args #a list of arguments to be provided, only used for help command
+    def __lt__(self, other):
+        return self.id < other.id
 
 #Attempts to execute the function of a given command
 async def executeCommand(message):
@@ -41,7 +43,7 @@ async def executeCommand(message):
     for command in Command.command_list:
         if command.id.lower() == id:
             found = True
-            if args and command.args != [None]:
+            if len(args) == len(command.args) and len(command.args):
                 return await command.func(args) #args are always passed as a list of args
             elif (args == None and command.args != [None]) or (len(args) < len(command.args)): #args required but not given
                 print("Missing {} arguments, required: {}".format(len(command.args) - len(args), command.args))
@@ -67,9 +69,11 @@ async def cmdHelp():
     print("-------          ---------                      -----------")
 
     #body
-    for command in Command.command_list:
+    listCommands = Command.command_list
+    listCommands.sort()
+    for command in listCommands:
         #args formatting
-        if command.args[0] == None:
+        if not len(command.args):
             args = "[None]"
         else:
             args = "[" + command.args[0]
