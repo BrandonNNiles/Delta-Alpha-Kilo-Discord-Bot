@@ -32,7 +32,7 @@ async def executeCommand(message):
     message = message[1:].split()
     id = message[0].lower()
 
-    args = None
+    args = {}
 
     if len(message) > 1:
         args = message[1:] #if arguments exist
@@ -43,8 +43,8 @@ async def executeCommand(message):
             found = True
             if args and command.args != [None]:
                 return await command.func(args) #args are always passed as a list of args
-            elif args == None and command.args != [None]: #args required but not given
-                print("Missing arguments, required: {}".format(command.args))
+            elif (args == None and command.args != [None]) or (len(args) < len(command.args)): #args required but not given
+                print("Missing {} arguments, required: {}".format(len(command.args) - len(args), command.args))
             else:
                 return await command.func()
     
