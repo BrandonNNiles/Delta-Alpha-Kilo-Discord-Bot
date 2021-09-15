@@ -29,6 +29,14 @@ class Command:
     def __lt__(self, other):
         return self.id < other.id
 
+#This class is needed in order to get the client class from main, might be a different work around
+class CommandSender():
+    client = None
+    chatMode = False #if true, all console input will be sent as chat messages to a previously defined channel
+    chatChannel = None
+    def __init__(self, client):
+        self.__class__.client = client
+
 #Attempts to execute the function of a given command
 async def executeCommand(message):
     print()

@@ -3,12 +3,6 @@
 '''
 from console import *
 
-#This class is needed in order to get the client class from main, might be a different work around
-class CommandSender():
-    client = None
-    def __init__(self, client):
-        self.__class__.client = client
-
 #Creates text into a fixed length string
 def f_len(text, length):
     if len(text) > length:
@@ -62,6 +56,19 @@ Command("say",
         cmdSay,
         ["ChannelID", "Message"]
 )
+
+async def cmdStartChatting(args):
+    channelID = args[0]
+    CommandSender.chatChannel = channelID
+    CommandSender.chatMode = True
+    channel = CommandSender.client.get_channel(channelID)
+    print("Chat-mode started for channel {}. Type /quit to exit".format(channel))
+
+
+Command("startchatting",
+        "Enables constant chat mode.",
+        cmdStartChatting,
+        ["ChannelID"])
 
 async def cmdChannelList(guildID):
     guild = CommandSender.client.get_guild(int(guildID[0]))
