@@ -2,21 +2,13 @@ import discord
 from discord.ext import commands
 from config import *
 from SQLite import *
-from console import *
 import time
-import aioconsole
+from console import *
 
 client = commands.Bot(command_prefix = ',')
 DAKServerID = 275482449591402496
 
 #Methods
-
-async def commandListener():
-    while True:
-        attempt = await aioconsole.ainput("Enter a command: ")
-        await executeCommand(attempt)
-
-
 
 #Connects the client to the server
 def startBot(token):
@@ -73,7 +65,6 @@ async def on_message(message):
     username = message.author.name
     content = message.content
     channel = message.channel.name
-    print("{}".format(message.author.guild.id))
     print("[{}] {}: {}".format(channel, username, content))
     guildID = message.guild.id
     logMessage(guildID, message)
@@ -102,26 +93,46 @@ async def on_member_leave(member):
 '''
     A list of commands to be available to command line.
 '''
+#Creates text into a fixed length string
+def f_len(text, length):
+    if len(text) > length:
+        text = text[:length]
+    elif len(text) < length:
+        text = (text + " " * (length - len(text)))
+    return text
 
-from console import *
+#Help command, displays a formated list of all commands
+async def cmdHelp():
+    #header
+    print("Found {} commands:\n".format(len(Command.command_list)))
+    print("Command          Arguments                      Description")
+    print("-------          ---------                      -----------")
 
+    #body
+    listCommands = Command.command_list
+    listCommands.sort()
+    for command in listCommands:
+        #args formatting
+        if not len(command.args):
+            args = "[None]"
+        else:
+            args = "[" + command.args[0]
+            for arg in command.args[1:]:
+                args = args + " " + arg
+            args = args + "]"
+
+        row = []
+        row.append(f_len(command_prefix, 1))
+        row.append(f_len(command.id, 15))
+        row.append(f_len(args, 30))
+        row.append(f_len(command.description, 80))
+        
+        print("{}{} {} {}".format(*row))
 
 Command(help_id, 
         "Displays all commands available.",
         cmdHelp)
 
-
-async def cmdPrint(id = None):
-    if id is None:
-        print("Please specifiy a command.")
-    else:
-        print(executeCommand(command_prefix + id))
-
-Command("print",
-        "Prints the result of executing a given command.",
-        cmdPrint,
-        ["Command"]
-)
 
 async def cmdSay(args):
     await client.wait_until_ready() #make sure we can send a message
@@ -170,6 +181,7 @@ Command("name",
         ["Argument1", "Argument2", "ArgumentX"]
 )
 '''
+
 
 bot_token = open(token_file, "r").read() #Work on encryption later
 startBot(bot_token) #Must be last line

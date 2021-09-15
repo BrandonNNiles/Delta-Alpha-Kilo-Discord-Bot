@@ -15,6 +15,8 @@ help_id = "help" #The command id for the help command, default: "help"
     =================================
 '''
 
+import aioconsole
+
 #Command class definition
 class Command:
     command_list = []
@@ -43,7 +45,7 @@ async def executeCommand(message):
     for command in Command.command_list:
         if command.id.lower() == id:
             found = True
-            if len(args) == len(command.args) and len(command.args):
+            if len(args) >= len(command.args) and len(command.args):
                 return await command.func(args) #args are always passed as a list of args
             elif (args == None and command.args != [None]) or (len(args) < len(command.args)): #args required but not given
                 print("Missing {} arguments, required: {}".format(len(command.args) - len(args), command.args))
@@ -53,38 +55,8 @@ async def executeCommand(message):
     if not found:
         print("Unknown command, type {}{} for a list of commands.".format(command_prefix, help_id))
 
-#Creates text into a fixed length string
-def f_len(text, length):
-    if len(text) > length:
-        text = text[:length]
-    elif len(text) < length:
-        text = (text + " " * (length - len(text)))
-    return text
-
-#Help command, displays a formated list of all commands
-async def cmdHelp():
-    #header
-    print("Found {} commands:\n".format(len(Command.command_list)))
-    print("Command          Arguments                      Description")
-    print("-------          ---------                      -----------")
-
-    #body
-    listCommands = Command.command_list
-    listCommands.sort()
-    for command in listCommands:
-        #args formatting
-        if not len(command.args):
-            args = "[None]"
-        else:
-            args = "[" + command.args[0]
-            for arg in command.args[1:]:
-                args = args + " " + arg
-            args = args + "]"
-
-        row = []
-        row.append(f_len(command_prefix, 1))
-        row.append(f_len(command.id, 15))
-        row.append(f_len(args, 30))
-        row.append(f_len(command.description, 80))
-        
-        print("{}{} {} {}".format(*row))
+async def commandListener():
+    while True:
+        attempt = await aioconsole.ainput("Enter a command: ")
+        if attempt and attempt != "":
+            await executeCommand(attempt)
