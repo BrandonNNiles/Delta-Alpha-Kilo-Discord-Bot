@@ -37,9 +37,29 @@ class CommandSender():
     def __init__(self, client):
         self.__class__.client = client
 
+async def chatOverride(message):
+    if message != command_prefix + "quit":
+        message = [CommandSender.chatChannel, message]
+        for command in Command.command_list:
+            if command.id == "say":
+                return await command.func(message)
+        print("Chat command not found, disabling chat mode.") #this shouldn't happen
+        CommandSender.chatMode = False
+        return
+    else:
+        print("Disabling chat mode.")
+        CommandSender.chatMode = False
+        return
+
+
+
 #Attempts to execute the function of a given command
 async def executeCommand(message):
     print()
+
+    if CommandSender.chatMode: #Override rest of function, we are in chat mode now
+        return await chatOverride(message)
+
     prefix = message[0]
     message = message[1:].split()
     id = message[0].lower()
@@ -48,6 +68,7 @@ async def executeCommand(message):
 
     if len(message) > 1:
         args = message[1:] #if arguments exist
+
 
     found = False
     for command in Command.command_list:
@@ -65,6 +86,9 @@ async def executeCommand(message):
 
 async def commandListener():
     while True:
-        attempt = await aioconsole.ainput("Enter a command: ")
+        scanMessage = "Enter a command: "
+        if CommandSender.chatMode:
+            scanMessage = "D.A.K.: "
+        attempt = await aioconsole.ainput(scanMessage)
         if attempt and attempt != "":
             await executeCommand(attempt)
