@@ -53,6 +53,13 @@ async def getInvite(guildID):
             correct_invite = invite
     return invite
 
+def messageDeleted(message):
+    channel = message.channel
+    author = message.author
+    content = message.content
+    print("A message by {} was deleted in {}: {}".format(author, channel, content))
+    #log event placeholder
+
 #Events
 
 @client.event
@@ -91,6 +98,29 @@ async def on_member_leave(member):
     invite = getInvite(guildID)
     print("{} has left the server".format(username))
     logLeave(guildID, member)
+
+@client.event
+async def on_disconnect():
+    print("\n\nClient has lost connection to discord!\n\n")
+
+@client.event
+async def on_message_delete(message):
+    messageDeleted(message)
+
+@client.event
+async def on_bulk_message_delete(messages):
+    for message in messages:
+        messageDeleted(message)
+
+@client.event
+async def on_message_edit(before, after):
+    oldContent = before.content
+    newContent = after.content
+    author = before.author
+    channel = before.channel
+    print("{} edited message in {}:".format(author, channel))
+    print("\t{}\n->\n\t{}".format(oldContent, newContent))
+    #log event placeholder
 
 bot_token = open(token_file, "r").read() #Work on encryption later
 startBot(bot_token) #Must be last line

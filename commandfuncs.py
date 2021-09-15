@@ -3,6 +3,7 @@
 '''
 from console import *
 
+#This class is needed in order to get the client class from main, might be a different work around
 class CommandSender():
     client = None
     def __init__(self, client):
