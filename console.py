@@ -37,6 +37,7 @@ class CommandSender():
     def __init__(self, client):
         self.__class__.client = client
 
+#Override command input for console->discord channel chat
 async def chatOverride(message):
     if message != command_prefix + "quit":
         message = [CommandSender.chatChannel, message]
@@ -45,13 +46,10 @@ async def chatOverride(message):
                 return await command.func(message)
         print("Chat command not found, disabling chat mode.") #this shouldn't happen
         CommandSender.chatMode = False
-        return
     else:
         print("Disabling chat mode.")
         CommandSender.chatMode = False
-        return
-
-
+    return
 
 #Attempts to execute the function of a given command
 async def executeCommand(message):
@@ -69,7 +67,6 @@ async def executeCommand(message):
     if len(message) > 1:
         args = message[1:] #if arguments exist
 
-
     found = False
     for command in Command.command_list:
         if command.id.lower() == id:
@@ -84,6 +81,7 @@ async def executeCommand(message):
     if not found:
         print("Unknown command, type {}{} for a list of commands.".format(command_prefix, help_id))
 
+#Loop to listen to user input via console
 async def commandListener():
     while True:
         scanMessage = "Enter a command: "

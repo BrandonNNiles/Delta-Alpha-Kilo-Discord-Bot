@@ -43,7 +43,7 @@ Command(help_id,
         "Displays all commands available.",
         cmdHelp)
 
-
+#Sends a message to channel
 async def cmdSay(args):
     await CommandSender.client.wait_until_ready() #make sure we can send a message
     channelID = args[0]
@@ -57,6 +57,7 @@ Command("say",
         ["ChannelID", "Message"]
 )
 
+#Enables chat-only mode
 async def cmdStartChatting(args):
     channelID = args[0]
     CommandSender.chatChannel = channelID
@@ -64,12 +65,12 @@ async def cmdStartChatting(args):
     channel = CommandSender.client.get_channel(channelID)
     print("Chat-mode started for channel {}. Type /quit to exit".format(channel))
 
-
 Command("startchatting",
         "Enables constant chat mode.",
         cmdStartChatting,
         ["ChannelID"])
 
+#Prints a list of text channels in a given guild
 async def cmdChannelList(guildID):
     guild = CommandSender.client.get_guild(int(guildID[0]))
     channels = guild.text_channels
@@ -83,6 +84,7 @@ Command("channellist",
         ["GuildID"]
 )
 
+#Prints a list of guilds that the bot client is connected to
 async def cmdGuildList():
     print("Found {} guilds.".format(len(CommandSender.client.guilds)))
     for guild in CommandSender.client.guilds:
