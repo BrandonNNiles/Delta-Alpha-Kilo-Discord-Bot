@@ -43,9 +43,9 @@ def hasInvite(inviteList, code):
     return correct_invite()
 
 #Determines an invite used by an individual when joining the server
-async def getInvite(guildID):
-    pre_invites = invites[guildID] #Check before and after
-    post_invites = await client.get_guild(guildID).invites()
+async def getInvite(guild):
+    pre_invites = invites[guild.ID] #Check before and after
+    post_invites = await guild.invites()
     correct_invite = None
 
     for invite in pre_invites:
@@ -81,8 +81,9 @@ async def on_message(message):
 @client.event
 async def on_member_join(member):
     username = member.name
-    guildID = member.guild.id
-    invite = getInvite(guildID)
+    guild = member.guild
+    guildID = guild.id
+    invite = getInvite(guild)
     if invite == None:
         print("{} has joined from an unknown source.".format(username))
     else:
@@ -94,8 +95,9 @@ async def on_member_join(member):
 @client.event
 async def on_member_leave(member):
     username = member.name
-    guildID = member.guild.id
-    invite = getInvite(guildID)
+    guild = member.guild
+    guildID = guild.id
+    invite = getInvite(guild)
     print("{} has left the server".format(username))
     logLeave(guildID, member)
 
