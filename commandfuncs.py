@@ -2,6 +2,7 @@
     A list of commands to be available to command line.
 '''
 from console import *
+from SQLite import searchDB
 
 #Creates text into a fixed length string
 def f_len(text, length):
@@ -93,6 +94,25 @@ async def cmdGuildList():
 Command("guildlist",
         "Prints a list of guilds and IDs that the bot is in.",
         cmdGuildList
+)
+
+async def cmdDBCount(args):
+    phrase = " ".join(args)
+    trueCount = 0
+    for guild in CommandSender.client.guilds:
+        guildid = guild.id
+        result, totalMessages = searchDB(guildid, phrase)
+        count = len(result)
+        total = len(totalMessages)
+        for message in result:
+            trueCount = trueCount + message[2].lower().count(phrase)
+
+        print("\"{}\" occurs {} times over {} messages, total messages: {} in {}.".format(phrase, trueCount, count, total, guild.name))
+
+Command("dbcount",
+        "Counts how many times a given string occurs in the database",
+        cmdDBCount,
+        ["Phrase"]
 )
 
 ####################

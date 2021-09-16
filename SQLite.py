@@ -111,6 +111,16 @@ def logLeave(fileID, user):
     (username, user_id, bot, timestamp))
     closeConn(conn)
 
+def searchDB(fileID, phrase):
+    phrase = '%' + phrase + '%'
+    conn, c = openConn(fileID)
+    c.execute("SELECT * from messages WHERE message_text LIKE (?)", (phrase,))
+    items = c.fetchall()
+    c.execute("SELECT * from messages")
+    count = c.fetchall()
+    return items, count
+
+
 #Prints the database to console, unformatted
 def printDB(fileID):
     conn, c = openConn(fileID)
