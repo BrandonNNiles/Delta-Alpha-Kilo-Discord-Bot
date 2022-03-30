@@ -124,5 +124,5 @@ async def on_message_edit(before, after):
     print("\t{}\n->\n\t{}".format(oldContent, newContent))
     #log event placeholder
 
-bot_token = open(token_file, "r").read() #Work on encryption later
+bot_token = os.environ.get("dak_bot_token")
 startBot(bot_token) #Must be last line
