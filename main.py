@@ -11,10 +11,19 @@ DAKServerID = 275482449591402496
 
 #Methods
 
+#Opens and returns the token specified
+def getToken(filename):
+    bot_token = open(filename, "w+").read() #Work on encryption later
+    return bot_token
+
 #Connects the client to the server
-def startBot(token):
-    CommandSender(client)
+def startBot():
     print("Attempting to start bot...")
+    token = getToken(token_file)
+    if token == "":
+        print("Error: Bot token not specified in " + token_file)
+        return
+    CommandSender(client)
     client.run(token)
 
 #Attempts to log the entire history of a specified server.
@@ -124,5 +133,4 @@ async def on_message_edit(before, after):
     print("\t{}\n->\n\t{}".format(oldContent, newContent))
     #log event placeholder
 
-bot_token = open(token_file, "r").read() #Work on encryption later
-startBot(bot_token) #Must be last line
+startBot() #Must be last line
