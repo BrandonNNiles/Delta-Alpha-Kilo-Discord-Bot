@@ -104,22 +104,24 @@ Command("guildlist",
 )
 
 async def cmdDBCount(args):
+    guildid = args[0]
+    del args[0]
     phrase = " ".join(args)
-    trueCount = 0
-    for guild in CommandSender.client.guilds:
-        guildid = guild.id
-        result, totalMessages = searchDB(guildid, phrase)
-        count = len(result)
-        total = len(totalMessages)
-        for message in result:
-            trueCount = trueCount + message[2].lower().count(phrase)
 
-        print("\"{}\" occurs {} times over {} messages, total messages: {} in {}.".format(phrase, trueCount, count, total, guild.name))
+    trueCount = 0
+    result, totalMessages = searchDB(guildid, phrase)
+    count = len(result)
+    total = len(totalMessages)
+    for message in result:
+        trueCount = trueCount + message[2].lower().count(phrase)
+
+    print("\"{}\" occurs {} times over {} messages, total messages: {} in {}.".format(phrase, trueCount, count, total,
+        CommandSender.client.get_guild(int(guildid)).name))
 
 Command("dbcount",
         "Counts how many times a given string occurs in the database",
         cmdDBCount,
-        ["Phrase"]
+        ["GuildID", "Phrase"]
 )
 
 ####################
