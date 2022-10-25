@@ -116,7 +116,7 @@ Install the following dependencies below:
         "bot_token": "YOUR_TOKEN_HERE"
     }
    ```
-5. Execute the file `main.py`
+5. Execute the file `src/main.py`
 
 
 

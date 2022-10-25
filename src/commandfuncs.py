@@ -7,6 +7,7 @@
 #Imports
 from console import *
 from SQLite import searchDB
+from config import console_prefix
 
 #Methods
 
@@ -39,7 +40,7 @@ async def cmdHelp():
             args = args + "]"
 
         row = []
-        row.append(f_len(command_prefix, 1))
+        row.append(f_len(console_prefix, 1))
         row.append(f_len(command.id, 15))
         row.append(f_len(args, 30))
         row.append(f_len(command.description, 80))

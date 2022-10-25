@@ -15,7 +15,7 @@ from config import bot_prefix, token_file
 from SQLite import logMessage
 from console import *
 from commandfuncs import *
-from events import *
+import events as events
 
 client = commands.Bot(command_prefix = bot_prefix)
 DAKServerID = 275482449591402496
@@ -66,36 +66,36 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
 
 @client.event
 async def on_ready():
-    events.ready()
+    await events.ready()
 
 @client.event
 async def on_message(message):
-    events.message(message)
+    await events.message(message)
 
 @client.event
 async def on_member_join(member):
-    events.memberJoin(member, invites)
+    await events.memberJoin(member, invites)
 
 @client.event
 async def on_member_leave(member):
-    events.memberLeave(member)
+    await events.memberLeave(member)
 
 @client.event
 async def on_disconnect():
-    events.botDisconnect()
+    await events.botDisconnect()
 
 @client.event
 async def on_message_delete(message):
-    events.messageDeleted(message)
+    await events.messageDeleted(message)
 
 @client.event
 async def on_bulk_message_delete(messages):
     for message in messages:
-        events.messageDeleted(message)
+        await events.messageDeleted(message)
 
 @client.event
 async def on_message_edit(before, after):
-    events.messageEdit(before, after)
+    await events.messageEdit(before, after)
 
 
 ################

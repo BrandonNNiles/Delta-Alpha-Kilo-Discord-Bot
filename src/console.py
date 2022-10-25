@@ -6,7 +6,7 @@
 
 #Imports
 import aioconsole
-from console import help_id, console_prefix
+from config import help_id, console_prefix
 
 #Command class definition
 class Command:

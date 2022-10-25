@@ -7,6 +7,7 @@
 
 #Imports
 from SQLite import logMessage, logJoin, logLeave
+from console import commandListener
 
 #Methods
 

@@ -1,7 +1,7 @@
 '''
     SQLite.py
     Purpose:
-        Uses SQLite3 to manage database related methods.
+        Uses SQLite3 to manage database related
 '''
 
 #Imports
