@@ -1,21 +1,12 @@
 '''
-    Basic console command implementation to provide
-    an interface with backend methods.
+    console.py
+    Purpose:
+        Console command implementation to provide interface for backend methods.
 '''
 
-#Configurables
-#=============#
-
-command_prefix = "/" #The prefix for typing commands, default: "/"
-help_id = "help" #The command id for the help command, default: "help"
-
-'''
-    =================================
-    Do not modify anything below here
-    =================================
-'''
-
+#Imports
 import aioconsole
+from console import help_id, console_prefix
 
 #Command class definition
 class Command:
@@ -39,7 +30,7 @@ class CommandSender():
 
 #Override command input for console->discord channel chat
 async def chatOverride(message):
-    if message != command_prefix + "quit":
+    if message != console_prefix + "quit":
         message = [CommandSender.chatChannel, message]
         for command in Command.command_list:
             if command.id == "say":
@@ -79,7 +70,7 @@ async def executeCommand(message):
                 return await command.func()
     
     if not found:
-        print("Unknown command, type {}{} for a list of commands.".format(command_prefix, help_id))
+        print("Unknown command, type {}{} for a list of commands.".format(console_prefix, help_id))
 
 #Loop to listen to user input via console
 async def commandListener():

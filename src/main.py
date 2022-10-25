@@ -1,3 +1,10 @@
+'''
+    main.py
+    Purpose:
+        Main bot handling executable.
+'''
+
+#Imports
 import discord
 from discord.ext import commands
 import time
@@ -67,7 +74,7 @@ async def on_message(message):
 
 @client.event
 async def on_member_join(member):
-    events.memberJoin(member)
+    events.memberJoin(member, invites)
 
 @client.event
 async def on_member_leave(member):

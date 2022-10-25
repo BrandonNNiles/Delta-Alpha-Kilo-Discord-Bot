@@ -1,10 +1,15 @@
 '''
-    SQLite module for managing database related methods.
+    SQLite.py
+    Purpose:
+        Uses SQLite3 to manage database related methods.
 '''
 
+#Imports
 import sqlite3
 import os
 from config import db_directory
+
+#Methods
 
 #Connects to a given database file
 def openConn(filename):

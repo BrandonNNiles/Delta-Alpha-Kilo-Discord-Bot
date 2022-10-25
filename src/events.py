@@ -1,12 +1,16 @@
 '''
-    A module used for defining the methods executed when events are called.
-    Event wrappers in main.py call methods in this file.
+    events.py
+    Purpose:
+        A module used for defining the methods executed when events are called.
+        Event wrappers in main.py call methods in this file.
 '''
 
+#Imports
 from SQLite import logMessage, logJoin, logLeave
 
+#Methods
+
 async def ready():
-    start = time.time()
     print("Bot initialized.")
     await commandListener()
 
@@ -25,11 +29,11 @@ async def messageDeleted(message):
     print("A message by {} was deleted in {}: {}".format(author, channel, content))
     #log event placeholder
 
-async def memberJoin(member):
+async def memberJoin(member, invites):
     username = member.name
     guild = member.guild
     guildID = guild.id
-    invite = getInvite(guild)
+    invite = getInvite(guild, invites)
     if invite == None:
         print("{} has joined from an unknown source.".format(username))
     else:
@@ -38,7 +42,7 @@ async def memberJoin(member):
         print("{} has joined from invite {} by {}".format(username, inviteid, inviter))
         logJoin(guildID, member, invite)
 
-async def memberLeave():
+async def memberLeave(member):
     username = member.name
     guild = member.guild
     guildID = guild.id
@@ -71,7 +75,7 @@ def hasInvite(inviteList, code):
     return correct_invite()
 
 #Determines an invite used by an individual when joining the server
-async def getInvite(guild):
+async def getInvite(guild, invites):
     pre_invites = invites[guild.ID] #Check before and after
     post_invites = await guild.invites()
     correct_invite = None
@@ -79,4 +83,4 @@ async def getInvite(guild):
     for invite in pre_invites:
         if invite.uses < hasInvite(post_invites, invite.code).uses:
             correct_invite = invite
-    return invite
+    return correct_invite

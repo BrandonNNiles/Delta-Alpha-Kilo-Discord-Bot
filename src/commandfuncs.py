@@ -1,10 +1,16 @@
 '''
-    A list of commands to be available to command line.
+    commandfuncs.py
+    Purpose:
+        Provides implementation of various commands for use in the command line.
 '''
+
+#Imports
 from console import *
 from SQLite import searchDB
 
-#Creates text into a fixed length string
+#Methods
+
+#Creates text into a fixed length string, helper
 def f_len(text, length):
     if len(text) > length:
         text = text[:length]
