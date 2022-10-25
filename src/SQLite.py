@@ -1,3 +1,7 @@
+'''
+    SQLite module for managing database related methods.
+'''
+
 import sqlite3
 import os
 from config import db_directory
@@ -65,6 +69,8 @@ def dbInit(fileID):
     os.chdir(os. getcwd())
     if not os.path.isdir(db_directory):   
         os.mkdir(db_directory)
+    if not os.path.exists(db_directory + fileID + ".db"):
+        print("Database for " + fileID + " not found. Creating...")
     createTables(fileID)
     print("Database initialized successfully.")
 
@@ -127,5 +133,5 @@ def printDB(fileID):
     print(c.fetchall())
     closeConn(conn)
 
-guildID = 275482449591402496
+guildID = "275482449591402496"
 dbInit(guildID)
