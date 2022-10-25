@@ -112,7 +112,9 @@ Install the following dependencies below:
 3. Install NPM packages (See above requirements)
 4. Enter your token in `token.js`
    ```js
-   CORRECT THIS
+   {
+        "bot_token": "YOUR_TOKEN_HERE"
+    }
    ```
 5. Execute the file `main.py`
 

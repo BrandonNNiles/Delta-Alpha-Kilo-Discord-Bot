@@ -27,7 +27,7 @@ def getToken(filename):
     if not os.path.exists(filename):
         print(filename + " generated.")
         f = open(filename, "w")
-        f.write("{\n    \"bot_token\": \"\"\n}")
+        f.write("{\n    \"bot_token\": \"YOUR_TOKEN_HERE\"\n}")
 
     f = open(filename)
 
