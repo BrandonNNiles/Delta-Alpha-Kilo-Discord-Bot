@@ -5,15 +5,24 @@ from SQLite import *
 import time
 from console import *
 from commandfuncs import *
+import os.path
+import json
 
-client = commands.Bot(command_prefix = ',')
+client = commands.Bot(command_prefix = bot_prefix)
 DAKServerID = 275482449591402496
 
 #Methods
 
 #Opens and returns the token specified
 def getToken(filename):
-    bot_token = open(filename, "w+").read() #Work on encryption later
+    if not os.path.exists(filename):
+        print(filename + " generated.")
+        f = open(filename, "w")
+        f.write("{\n    \"bot_token\": \"\"\n}")
+
+    f = open(filename)
+
+    bot_token = json.load(f)['bot_token']
     return bot_token
 
 #Connects the client to the server

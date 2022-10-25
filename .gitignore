@@ -2,5 +2,5 @@
 __pycache__/
 
 # Project Specific
-token.txt
+token.json
 db/
