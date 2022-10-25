@@ -1,12 +1,14 @@
 import discord
 from discord.ext import commands
-from config import bot_prefix, token_file
-from SQLite import *
 import time
-from console import *
-from commandfuncs import *
 import os.path
 import json
+
+from config import bot_prefix, token_file
+from SQLite import logMessage
+from console import *
+from commandfuncs import *
+from events import *
 
 client = commands.Bot(command_prefix = bot_prefix)
 DAKServerID = 275482449591402496
@@ -37,6 +39,7 @@ def startBot():
 
 #Attempts to log the entire history of a specified server.
 #Call using: await logAll(DAKServerID)
+# to do: move to a different file (commands ideally)
 async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound = None, goldest_first = True):
     message_count = 0
     start = time.time()
@@ -52,94 +55,43 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
     time_elapsed = round(finish - start)
     print("Logged {} messages. Took {} seconds".format(message_count, time_elapsed))
 
-#Tries to find needle code in haystack
-def hasInvite(inviteList, code):
-    correct_invite = None
-    for invite in inviteList:
-        if invite.code == code:
-            correct_invite = invite
-    return correct_invite()
-
-#Determines an invite used by an individual when joining the server
-async def getInvite(guild):
-    pre_invites = invites[guild.ID] #Check before and after
-    post_invites = await guild.invites()
-    correct_invite = None
-
-    for invite in pre_invites:
-        if invite.uses < hasInvite(post_invites, invite.code).uses:
-            correct_invite = invite
-    return invite
-
-def messageDeleted(message):
-    channel = message.channel
-    author = message.author
-    content = message.content
-    print("A message by {} was deleted in {}: {}".format(author, channel, content))
-    #log event placeholder
-
-#Events
+#Events (see events.py)
 
 @client.event
 async def on_ready():
-    
-    start = time.time()
-    print("Bot initialized.")
-    await commandListener()
+    events.ready()
 
 @client.event
 async def on_message(message):
-    username = message.author.name
-    content = message.content
-    channel = message.channel.name
-    print("[{}] {}: {}".format(channel, username, content))
-    guildID = message.guild.id
-    logMessage(guildID, message)
+    events.message(message)
 
 @client.event
 async def on_member_join(member):
-    username = member.name
-    guild = member.guild
-    guildID = guild.id
-    invite = getInvite(guild)
-    if invite == None:
-        print("{} has joined from an unknown source.".format(username))
-    else:
-        inviteid = invite.code
-        inviter = invite.inviter.name
-        print("{} has joined from invite {} by {}".format(username, inviteid, inviter))
-        logJoin(guildID, member, invite)
+    events.memberJoin(member)
 
 @client.event
 async def on_member_leave(member):
-    username = member.name
-    guild = member.guild
-    guildID = guild.id
-    invite = getInvite(guild)
-    print("{} has left the server".format(username))
-    logLeave(guildID, member)
+    events.memberLeave(member)
 
 @client.event
 async def on_disconnect():
-    print("\n\nClient has lost connection to discord!\n\n")
+    events.botDisconnect()
 
 @client.event
 async def on_message_delete(message):
-    messageDeleted(message)
+    events.messageDeleted(message)
 
 @client.event
 async def on_bulk_message_delete(messages):
     for message in messages:
-        messageDeleted(message)
+        events.messageDeleted(message)
 
 @client.event
 async def on_message_edit(before, after):
-    oldContent = before.content
-    newContent = after.content
-    author = before.author
-    channel = before.channel
-    print("{} edited message in {}:".format(author, channel))
-    print("\t{}\n->\n\t{}".format(oldContent, newContent))
-    #log event placeholder
+    events.messageEdit(before, after)
 
+
+################
+# Driver Code
+################
 startBot() #Must be last line
