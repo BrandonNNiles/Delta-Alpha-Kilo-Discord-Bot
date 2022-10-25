@@ -6,7 +6,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/BrandonNNiles/Delta-Alpha-Kilo-Discord-Bot">
-    <img src="images/dak.png" alt="Logo" width="80" height="80">
+    <img src="media/images/dak.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">D.A.K. Discord Bot</h3>
