@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import *
+from config import bot_prefix, token_file
 from SQLite import *
 import time
 from console import *

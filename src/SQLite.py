@@ -1,7 +1,6 @@
 import sqlite3
 import os
-
-db_directory = "db/"
+from config import db_directory
 
 #Connects to a given database file
 def openConn(filename):
