@@ -12,7 +12,7 @@ import os.path
 import json
 
 from config import bot_prefix, token_file
-from SQLite import logMessage
+from SQLite import dbInit, logMessage
 from console import *
 from commandfuncs import *
 import events as events

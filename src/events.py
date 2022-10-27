@@ -6,13 +6,15 @@
 '''
 
 #Imports
-from SQLite import logMessage, logJoin, logLeave
-from console import commandListener
+from SQLite import logMessage, logJoin, logLeave, dbInit
+from console import commandListener, CommandSender
 
 #Methods
 
 async def ready():
     print("Bot initialized.")
+    for guild in CommandSender.client.guilds:
+        dbInit(str(guild.id))
     await commandListener()
 
 async def message(message):

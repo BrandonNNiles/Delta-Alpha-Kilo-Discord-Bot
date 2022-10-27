@@ -161,7 +161,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Brandon Niles - [LinkedIn](https://twitter.com/your_username) - brandonniles00@gmail.com
+Brandon Niles - [LinkedIn](https://www.linkedin.com/in/brandonnniles/) - brandonniles00@gmail.com
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

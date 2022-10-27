@@ -70,14 +70,13 @@ def createTables(fileID):
 
 #Attempts to initialize the database
 def dbInit(fileID):
-    print("Attempting to start database...")
     os.chdir(os. getcwd())
     if not os.path.isdir(db_directory):   
         os.mkdir(db_directory)
     if not os.path.exists(db_directory + fileID + ".db"):
         print("Database for " + fileID + " not found. Creating...")
     createTables(fileID)
-    print("Database initialized successfully.")
+    print("Database for " + fileID +" initialized successfully.")
 
 #Attempts to log a a given message to a given file
 def logMessage(fileID, message):
@@ -137,6 +136,3 @@ def printDB(fileID):
     c.execute("SELECT rowid, * FROM messages")
     print(c.fetchall())
     closeConn(conn)
-
-guildID = "275482449591402496"
-dbInit(guildID)
