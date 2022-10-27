@@ -69,13 +69,15 @@ def createTables(fileID):
     closeConn(conn)
 
 #Attempts to initialize the database
-def dbInit(fileID):
+async def dbInit(guild):
+    fileID = str(guild.id)
     os.chdir(os. getcwd())
     if not os.path.isdir(db_directory):   
         os.mkdir(db_directory)
     if not os.path.exists(db_directory + fileID + ".db"):
-        print("Database for " + fileID + " not found. Creating...")
-    createTables(fileID)
+        print("Database for " + guild.name + " not found. Creating...")
+        createTables(fileID)
+        await transcribe(guild)
     print("Database for " + fileID +" initialized successfully.")
 
 #Attempts to log a a given message to a given file
@@ -136,3 +138,16 @@ def printDB(fileID):
     c.execute("SELECT rowid, * FROM messages")
     print(c.fetchall())
     closeConn(conn)
+
+#Logs all messages found in available channels in a given server
+async def transcribe(guild):
+    guildID = guild.id
+    message_count = 0
+    for channel in guild.text_channels:
+        messages = channel.history(limit = None, before = None, after = None, around = None, oldest_first = True)
+        async for message in messages:
+            message_count = message_count + 1
+            print("Logging message ({}) - {}".format(message_count, guild.name))
+            logMessage(guildID, message)
+    print("Transcription of {} complete.".format(guild.name))
+    print("Logged {} messages.".format(message_count))

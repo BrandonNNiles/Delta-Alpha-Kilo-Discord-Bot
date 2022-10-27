@@ -14,7 +14,7 @@ from console import commandListener, CommandSender
 async def ready():
     print("Bot initialized.")
     for guild in CommandSender.client.guilds:
-        dbInit(str(guild.id))
+        await dbInit(guild)
     await commandListener()
 
 async def message(message):

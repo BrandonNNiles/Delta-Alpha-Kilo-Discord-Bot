@@ -8,7 +8,7 @@
 import time
 
 from console import *
-from SQLite import searchDB, logMessage
+from SQLite import searchDB, logMessage, transcribe
 from config import console_prefix
 
 #Methods
@@ -146,7 +146,8 @@ async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound 
 
 async def cmdLogAll(args):
     guildID = args[0]
-    await logAll(guildID)
+    guild = CommandSender.client.get_guild(int(guildID))
+    await transcribe(guild)
 
 
 Command("logall",
