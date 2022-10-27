@@ -129,8 +129,16 @@ Install the following dependencies below:
 
 ### Chat Commands
 ### Console Commands
-
-Code examples.
+```
+Command          Arguments                      Description
+-------          ---------                      -----------
+/channellist     [GuildID]                      Prints a list of all channels and their IDs.
+/dbcount         [GuildID Phrase]               Counts how many times a given string occurs in the database
+/guildlist       [None]                         Prints a list of guilds and IDs that the bot is in.
+/help            [None]                         Displays all commands available.
+/say             [ChannelID Message]            Sends a message to a given channel.
+/startchatting   [ChannelID]                    Enables constant chat mode.
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

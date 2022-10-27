@@ -7,18 +7,15 @@
 #Imports
 import discord
 from discord.ext import commands
-import time
 import os.path
 import json
 
 from config import bot_prefix, token_file
-from SQLite import dbInit, logMessage
 from console import *
-from commandfuncs import *
+from commandfuncs import Command #Initializes all commands, find a better method
 import events as events
 
 client = commands.Bot(command_prefix = bot_prefix)
-DAKServerID = 275482449591402496
 
 #Methods
 
@@ -43,24 +40,6 @@ def startBot():
         return
     CommandSender(client)
     client.run(token)
-
-#Attempts to log the entire history of a specified server.
-#Call using: await logAll(DAKServerID)
-# to do: move to a different file (commands ideally)
-async def logAll(guildID, glimit = None, gbefore = None, gafter = None, garound = None, goldest_first = True):
-    message_count = 0
-    start = time.time()
-    guild = client.get_guild(guildID)
-    for channel in guild.text_channels:
-        messages = channel.history(limit = glimit, before = gbefore, after = gafter, around = garound, oldest_first = goldest_first)
-        async for message in messages:
-            message_count = message_count + 1
-            print("Logging message ({})".format(message_count))
-            logMessage(guildID, message)
-    finish = time.time()
-    print("Backup complete.")
-    time_elapsed = round(finish - start)
-    print("Logged {} messages. Took {} seconds".format(message_count, time_elapsed))
 
 #Events (see events.py)
 
