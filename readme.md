@@ -89,6 +89,10 @@ You can either:
 ### Requirements
 
 Install the following dependencies below:
+* Discord.py
+  ```sh
+  pip install git+https://github.com/Rapptz/discord.py
+  ```
 * npm
   ```sh
   npm install npm@latest -g
@@ -97,14 +101,12 @@ Install the following dependencies below:
   ```sh
   npm install sqlite3
   ```
-* Discord.py
-  ```sh
-  npm install discord.py
-  ```
 
 ### Installation
 
-1. Create a [Discord Bot Application](https://discord.com/developers/docs/) and note your Discord Bot's Token
+1. Create a [Discord Bot Application](https://discord.com/developers/docs/)
+    * a) Note your bot's token
+    * b) Assign all privledge intents on the application's "Bot" page  
 2. Clone the repo
    ```sh
    git clone https://github.com/BrandonNNiles/Delta-Alpha-Kilo-Discord-Bot.git

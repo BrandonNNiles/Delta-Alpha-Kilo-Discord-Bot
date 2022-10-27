@@ -7,13 +7,13 @@
 
 #Imports
 from SQLite import logMessage, logJoin, logLeave, dbInit
-from console import commandListener, CommandSender
+from console import commandListener
 
 #Methods
 
-async def ready():
+async def ready(client):
     print("Bot initialized.")
-    for guild in CommandSender.client.guilds:
+    for guild in client.guilds:
         await dbInit(guild)
     await commandListener()
 

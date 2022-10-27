@@ -15,7 +15,7 @@ from console import *
 from commandfuncs import Command #Initializes all commands, find a better method
 import events as events
 
-client = commands.Bot(command_prefix = bot_prefix)
+client = commands.Bot(command_prefix = bot_prefix, intents = discord.Intents.all())
 
 #Methods
 
@@ -45,7 +45,7 @@ def startBot():
 
 @client.event
 async def on_ready():
-    await events.ready()
+    await events.ready(client)
 
 @client.event
 async def on_message(message):
