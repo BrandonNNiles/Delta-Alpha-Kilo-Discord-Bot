@@ -65,6 +65,10 @@ async def messageEdit(before, after):
     print("\t{}\n->\n\t{}".format(oldContent, newContent))
     #log event placeholder
 
+async def guildJoin(guild):
+    print("Joined " + guild.name)
+    await dbInit(guild)
+
 ################
 # Helper methods
 ################

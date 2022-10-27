@@ -82,6 +82,9 @@ async def dbInit(guild):
 
 #Attempts to log a a given message to a given file
 def logMessage(fileID, message):
+    if not validDB(fileID):
+        print("Failed logging message: DB for "+ str(fileID) + " not valid!")
+        return
     conn, c = openConn(fileID)
     username = message.author.name
     user_id = message.author.id
@@ -151,3 +154,12 @@ async def transcribe(guild):
             logMessage(guildID, message)
     print("Transcription of {} complete.".format(guild.name))
     print("Logged {} messages.".format(message_count))
+
+
+#Helpers
+
+#Returns if a fileID is a valid DB
+def validDB(fileID):
+    if os.path.exists(db_directory + str(fileID) + ".db"):
+        return True
+    return False

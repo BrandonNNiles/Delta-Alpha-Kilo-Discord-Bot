@@ -76,6 +76,10 @@ async def on_bulk_message_delete(messages):
 async def on_message_edit(before, after):
     await events.messageEdit(before, after)
 
+@client.event
+async def on_guild_join(guild):
+    await events.guildJoin(guild)
+
 
 ################
 # Driver Code
