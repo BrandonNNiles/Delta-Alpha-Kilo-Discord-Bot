@@ -121,7 +121,7 @@ async def cmdDBCount(args):
         CommandSender.client.get_guild(int(guildid)).name))
 
 Command("dbcount",
-        "Counts how many times a given string occurs in the database",
+        "Counts how many times a given string occurs in the database.",
         cmdDBCount,
         ["GuildID", "Phrase"]
 )

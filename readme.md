@@ -128,19 +128,24 @@ Install the following dependencies below:
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+The main purpose of the bot is to extract useful information regarding statistics of a given server, this can be accomplished through a few different means.
 
 ### Chat Commands
+Pending implementation.
 ### Console Commands
+The following are a set of currently implemented commands that can be executed through the applications terminal. Due to the nature of the console, these would only be accessible through manual access of the bot's operation.
 ```
 Command          Arguments                      Description
 -------          ---------                      -----------
 /channellist     [GuildID]                      Prints a list of all channels and their IDs.
-/dbcount         [GuildID Phrase]               Counts how many times a given string occurs in the database
+/dbcount         [GuildID Phrase]               Counts how many times a given string occurs in the database.
 /guildlist       [None]                         Prints a list of guilds and IDs that the bot is in.
 /help            [None]                         Displays all commands available.
 /say             [ChannelID Message]            Sends a message to a given channel.
 /startchatting   [ChannelID]                    Enables constant chat mode.
 ```
+####UI
+Pending implementation.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
